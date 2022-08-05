@@ -14,3 +14,5 @@
 ### Direct link to [Google Colab Notebook](https://colab.research.google.com/github/bryanwills/python_codelou/blob/main/real_estate_property_info.ipynb#scrollTo=PCM2vtEhKz7e)
 
 ### The Google Colab opened up may have a different filename in Google Colab, I was going to do a stock price predcition project and changed the name in Google Drive and Github but for some reason it will still show the stock price name every now and then. The Notebook still runs as intended on Google.
+
+### Note!!! If at any point, running the code ```result_items[0]['Building']['Bedrooms']``` for example and you receive an error saying 'KeyError: 'Bedrooms' an invalid datapoint from the site is reported back. But this is only for one item and is fixed later when appending the data and going through the iterations of the pages. This is code is just showing what happens when trying to search a single listing and is not representing the entire project. Running it again later when another listing shows up, will fix this.
