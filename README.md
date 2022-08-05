@@ -8,4 +8,9 @@
 
 ### For this project, I created a Google Colab Notebook which is included in the repo. I also started a self-hosted Jupyter Notebook on one of my VPS servers just to have some variety and to learn about using Jupyter notebooks. One thing I struggled with is reading the database from a remote connection. Hosting the postgres database on my Google Colab Notebook did not seem to work like I wanted. There isn't an easy way for me to make a query on the database using the notebook I was working on to make life simple. I tried to use a Jupyter Notebook on my VPS server as I have complete control over that server. While I can connect to the DB remotely after configuring PostgreSQL correctly to accept incoming connections, I could not get the SSL settings to work in a timely fashion and since class is already over and I am allowed to turn my project in late, this will just be a feature that I cannot completely demonstrate properly.
 
+### To open the Jupyter Notebook on my VPS, please visit the link below and open the Real Estate Scrape.ipynb file. The sections of code can be ran from this site as well as the Google Colab Notebook.
 ### [Jupyter Notebook hosted at bryanwills.xyz](http://bryanwills.xyz:8888/?token=f82f60f96cd0d1ee39ad8e05592d8b998509d53189ba413a)
+
+### Direct link to [Google Colab Notebook](https://colab.research.google.com/github/bryanwills/python_codelou/blob/main/real_estate_property_info.ipynb#scrollTo=PCM2vtEhKz7e)
+
+### The Google Colab opened up may have a different filename in Google Colab, I was going to do a stock price predcition project and changed the name in Google Drive and Github but for some reason it will still show the stock price name every now and then. The Notebook still runs as intended on Google.
