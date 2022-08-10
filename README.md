@@ -25,6 +25,11 @@
 - Use pandas to remove null values. I removed datapoints that did not have a value in it by appending an empty string '' for these values.
 - I think that is enough to pass! At least I hope so :)
 
-### I tried to run this as a python script from a Linux server to have a better chance with the db working and performing a query. That is the reason for the realestate.py file, and the requirements.txt. Using Jupyter or Google Colab Notebooks, gives a better visual to the data used in this project instead of a terminal view.
+### If you clone this project with the following commands, you can run the project and it will download the .xlsx file to your computer.
+### ```git clone https://github.com/bryanwills/python_codelou```
+### ```pip3 install -r requirements.txt```
+### ```python3 realestate.py```
+
+### Or run one of the notebooks. I made this project compatible in various ways of executing it.
 
 ### Note!!! If at any point, running the code ```result_items[0]['Building']['Bedrooms']``` for example and you receive an error saying 'KeyError: 'Bedrooms' an invalid datapoint from the site is reported back. But this is only for one item and is fixed later when appending the data and going through the iterations of the pages. This is code is just showing what happens when trying to search a single listing and is not representing the entire project. Running it again later when another listing shows up, will fix this.
