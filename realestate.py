@@ -1,8 +1,9 @@
 import requests
 import pandas as pd
-import sqlalchemy
 import openpyxl
 import psycopg2
+import datetime as dt
+import time
 
 headers = {
     'authority': 'api2.realtor.ca',
@@ -23,43 +24,44 @@ headers = {
 }
 
 data = {
-  'ZoomLevel': '10',
-  'LatitudeMax': '45.61508',
-  'LongitudeMax': '-75.15382',
-  'LatitudeMin': '44.88320',
-  'LongitudeMin': '-76.44608',
-  'Sort': '6-D',
-  'PropertyTypeGroupID': '1',
-  'PropertySearchTypeId': '1',
-  'TransactionTypeId': '2',
-  'Currency': 'FXUSDCAD',
-  'RecordsPerPage': '12',
-  'ApplicationId': '1',
-  'CultureId': '1',
-  'Version': '7.0',
-  'CurrentPage': '1'
+    'ZoomLevel': '10',
+    'LatitudeMax': '45.61508',
+    'LongitudeMax': '-75.15382',
+    'LatitudeMin': '44.88320',
+    'LongitudeMin': '-76.44608',
+    'Sort': '6-D',
+    'PropertyTypeGroupID': '1',
+    'PropertySearchTypeId': '1',
+    'TransactionTypeId': '2',
+    'Currency': 'FXUSDCAD',
+    'RecordsPerPage': '12',
+    'ApplicationId': '1',
+    'CultureId': '1',
+    'Version': '7.0',
+    'CurrentPage': '1'
 }
 
-response = requests.post('https://api2.realtor.ca/Listing.svc/PropertySearch_Post', headers=headers, data=data)
+response = requests.post(
+    'https://api2.realtor.ca/Listing.svc/PropertySearch_Post', headers=headers, data=data)
 
-#check status code from the request
+# check status code from the request
 print(response)
-#should get back a 200 response
-#create json object
+# should get back a 200 response
+# create json object
 result_json = response.json()
 
-#output keys
+# output keys
 result_json.keys()
-#find the data we are looking for
-#Address
-#Bedrooms
-#Bathrooms
-#Agent Name
-#Area Code
-#Phone Number
-#Price
+# find the data we are looking for
+# Address
+# Bedrooms
+# Bathrooms
+# Agent Name
+# Area Code
+# Phone Number
+# Price
 
-#starting point for the data
+# starting point for the data
 result_items = result_json['Results']
 
 len(result_items)
@@ -80,7 +82,7 @@ result_items[0]['Individual'][0]['Phones'][0]['AreaCode']
 # Get the phone number
 result_items[0]['Individual'][0]['Phones'][0]['PhoneNumber']
 
-#put everything together in a loop to iterate the data needed, putting information into a list
+# put everything together in a loop to iterate the data needed, putting information into a list
 # Create empty lists, these are the data points I want to extract from the webpage
 address = []
 bedrooms = []
@@ -125,7 +127,8 @@ for result in result_items:
 
     # phone number
     try:
-        phone_number.append(result['Individual'][0]['Phones'][0]['PhoneNumber'])
+        phone_number.append(result['Individual'][0]
+                            ['Phones'][0]['PhoneNumber'])
     except:
         phone_number.append('')
 
@@ -135,17 +138,18 @@ for result in result_items:
     except:
         price.append('')
 
-#print out the 12 addresses from the first page of search results
+# print out the 12 addresses from the first page of search results
 print(address)
 
-#Pandas Dataframe
+# Pandas Dataframe
 # Take all the data from the for loop above and put it into a Pandas Dataframe, each list should return a column
-df_realtor = pd.DataFrame({'Address': address, 'Bedrooms': bedrooms, 'Bathrooms': bathrooms, 'Agent Name': agent_name, 'Area Code': area_code, 'Telephone': phone_number, 'Price': price})
+df_realtor = pd.DataFrame({'Address': address, 'Bedrooms': bedrooms, 'Bathrooms': bathrooms,
+                          'Agent Name': agent_name, 'Area Code': area_code, 'Telephone': phone_number, 'Price': price})
 
 # Display the data frame, will show all 12 addresses and related information for each listing on the page.
 print(df_realtor)
 
-#put everything together in a loop to iterate through all 50 pages of search results
+# put everything together in a loop to iterate through all 50 pages of search results
 # Create empty lists, these are the data points I want to extract from the webpage
 address = []
 bedrooms = []
@@ -156,7 +160,7 @@ phone_number = []
 price = []
 
 # iterate over the pages 1 to 51 using the CurrentPage key value as the variable in the for loop to get data from all the pages available.
-for i in range(1,51):
+for i in range(1, 51):
 
     headers = {
         'authority': 'api2.realtor.ca',
@@ -177,25 +181,26 @@ for i in range(1,51):
     }
 
     data = {
-    'ZoomLevel': '10',
-    'LatitudeMax': '45.61508',
-    'LongitudeMax': '-75.15382',
-    'LatitudeMin': '44.88320',
-    'LongitudeMin': '-76.44608',
-    'Sort': '6-D',
-    'PropertyTypeGroupID': '1',
-    'PropertySearchTypeId': '1',
-    'TransactionTypeId': '2',
-    'Currency': 'FXUSDCAD',
-    'RecordsPerPage': '12',
-    'ApplicationId': '1',
-    'CultureId': '1',
-    'Version': '7.0',
-    'CurrentPage': str(i),
+        'ZoomLevel': '10',
+        'LatitudeMax': '45.61508',
+        'LongitudeMax': '-75.15382',
+        'LatitudeMin': '44.88320',
+        'LongitudeMin': '-76.44608',
+        'Sort': '6-D',
+        'PropertyTypeGroupID': '1',
+        'PropertySearchTypeId': '1',
+        'TransactionTypeId': '2',
+        'Currency': 'FXUSDCAD',
+        'RecordsPerPage': '12',
+        'ApplicationId': '1',
+        'CultureId': '1',
+        'Version': '7.0',
+        'CurrentPage': str(i),
     }
 
     # response
-    response = requests.post('https://api2.realtor.ca/Listing.svc/PropertySearch_Post', headers=headers, data=data)
+    response = requests.post(
+        'https://api2.realtor.ca/Listing.svc/PropertySearch_Post', headers=headers, data=data)
 
     # create json object
     result_json = response.json()
@@ -237,7 +242,8 @@ for i in range(1,51):
 
         # phone number
         try:
-            phone_number.append(result['Individual'][0]['Phones'][0]['PhoneNumber'])
+            phone_number.append(result['Individual']
+                                [0]['Phones'][0]['PhoneNumber'])
         except:
             phone_number.append('')
 
@@ -248,16 +254,13 @@ for i in range(1,51):
             price.append('')
 
 # Take all the data from the for loop above and put it into a Pandas Dataframe, each list should return a column. Re-use the data frame we already created, taking to account the iteration of all the page results.
-df_realtor = pd.DataFrame({'Address': address, 'Bedrooms': bedrooms, 'Bathrooms': bathrooms, 'Agent Name': agent_name, 'Area Code': area_code, 'Telephone': phone_number, 'Price': price})
+df_realtor = pd.DataFrame({'Address': address, 'Bedrooms': bedrooms, 'Bathrooms': bathrooms,
+                          'Agent Name': agent_name, 'Area Code': area_code, 'Telephone': phone_number, 'Price': price})
 
 # output the data frame to show all results. Running this cell generates 600 rows of real estate listings
 print(df_realtor)
 
-#Store it into Excel
-df_realtor.to_excel('realtor_multiple_pages.xlsx', index=False)
-
-#Store information into postgres
-# create an sqlalchmey engine using the postgres username and password, port 5432 (db port)
-engine = sqlalchemy.create_engine('postgresql://postgres:12345@localhost:5432')
-# send dataframe to sql using the name real_estate as the table name and passing in the engine parameter
-df_realtor.to_sql('real_estate_new', engine)
+# Store it into Excel
+today = time.strftime('%m%d%Y')
+excel_name = "real_estate_data_" + today + ".xlsx"
+df_realtor.to_excel(excel_name, index=False)
